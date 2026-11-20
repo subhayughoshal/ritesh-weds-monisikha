@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 760" role="img" aria-label="Royal wedding illustration">
+<defs>
+ <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#111b35"/><stop offset=".62" stop-color="#443348"/><stop offset="1" stop-color="#211a2b"/></linearGradient>
+ <linearGradient id="gold" x2="1" y2="1"><stop stop-color="#8e6534"/><stop offset=".5" stop-color="#f2d99b"/><stop offset="1" stop-color="#a77a3f"/></linearGradient>
+ <linearGradient id="ivory" x2="0" y2="1"><stop stop-color="#fff0d3"/><stop offset="1" stop-color="#cda878"/></linearGradient>
+</defs>
+<rect width="600" height="760" fill="url(#sky)"/>
+<circle cx="450" cy="128" r="65" fill="#f6e6bd" opacity=".9"/><circle cx="450" cy="128" r="88" fill="none" stroke="#d6b979" opacity=".25"/>
+<g fill="#f5dfad" opacity=".8"><circle cx="90" cy="95" r="3"/><circle cx="170" cy="165" r="2"/><circle cx="530" cy="260" r="3"/><circle cx="80" cy="300" r="2"/><circle cx="350" cy="65" r="2"/><circle cx="260" cy="210" r="2"/></g>
+<!-- palace silhouette -->
+<path d="M0 520V360h55v-55h54v55h55v-90h55v-55l31 35 31-35v145h38v-95h55v-50l30 30 30-30v145h55v-55h54v55h53v160z" fill="#171727" stroke="url(#gold)" stroke-width="4"/>
+<path d="M210 520V375q0-90 90-90t90 90v145" fill="#2c2637" stroke="url(#gold)" stroke-width="8"/>
+<path d="M232 520V386q0-68 68-68t68 68v134" fill="none" stroke="#d9b979" stroke-width="3"/>
+<g stroke="#cba967" fill="none" stroke-width="3"><path d="M20 520V390q35-65 70 0v130M510 520V390q35-65 70 0v130"/><path d="M42 430h26M532 430h26"/></g>
+<!-- ceremonial arch -->
+<path d="M65 760V535Q65 300 300 300t235 235v225" fill="none" stroke="url(#gold)" stroke-width="13"/>
+<path d="M82 760V540Q82 320 300 320t218 220v220" fill="none" stroke="#f3dfb0" stroke-opacity=".5" stroke-width="2"/>
+<!-- floral garlands -->
+<g fill="#e9d7ae" stroke="#b88c4e" stroke-width="2"><circle cx="105" cy="400" r="13"/><circle cx="126" cy="365" r="10"/><circle cx="155" cy="337" r="12"/><circle cx="495" cy="400" r="13"/><circle cx="474" cy="365" r="10"/><circle cx="445" cy="337" r="12"/><circle cx="300" cy="306" r="14"/></g>
+<g fill="#8e4654"><circle cx="105" cy="400" r="5"/><circle cx="155" cy="337" r="5"/><circle cx="495" cy="400" r="5"/><circle cx="445" cy="337" r="5"/><circle cx="300" cy="306" r="6"/></g>
+<!-- symbolic couple silhouettes, deliberately stylised -->
+<path d="M170 760q8-150 65-190 24-18 50 0 54 40 62 190" fill="#7c3449" stroke="url(#gold)" stroke-width="5"/>
+<path d="M255 760q8-150 65-190 24-18 50 0 54 40 62 190" fill="#24364b" stroke="url(#gold)" stroke-width="5"/>
+<circle cx="247" cy="525" r="37" fill="url(#ivory)"/><circle cx="332" cy="525" r="37" fill="url(#ivory)"/>
+<path d="M210 520q-5-65 40-70 42 0 39 68-22-22-40-23-18 18-39 25" fill="#211824"/><path d="M294 520q-5-65 40-70 42 0 39 68-22-22-40-23-18 18-39 25" fill="#211824"/>
+<path d="M207 495q38-48 79 0M291 495q38-48 79 0" fill="none" stroke="url(#gold)" stroke-width="7"/>
+<path d="M248 566q42 26 84 0" fill="none" stroke="#e6c98c" stroke-width="5"/>
+<!-- foreground lotus motifs -->
+<g transform="translate(300 690)" fill="none" stroke="url(#gold)" stroke-width="3"><path d="M0 34Q-50 5-32-30Q-5-18 0 10Q5-18 32-30Q50 5 0 34Z"/><path d="M-58 38Q-28 15 0 34Q28 15 58 38M-75 48Q-30 30 0 48Q30 30 75 48"/></g>
+<text x="300" y="735" text-anchor="middle" fill="#f4e4c7" font-family="Georgia,serif" font-size="14" letter-spacing="4">A ROYAL BEGINNING</text>
+</svg>

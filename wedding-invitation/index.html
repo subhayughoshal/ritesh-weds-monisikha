@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#171522"><meta name="description" content="A celebration of love — a wedding invitation">
+  <title>A Wedding Invitation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="grain"></div>
+  <section class="gate-screen" id="gateScreen" aria-label="Wedding invitation entrance">
+    <div class="gate-scene">
+      <div class="gate-sky"><span class="moon"></span><div class="palace palace-back"></div><div class="palace palace-front"></div></div>
+      <div class="gate-florals">✦ ❀ ✦ ❀ ✦</div>
+      <div class="gate-doors"><div class="gate-door left-door"><div class="door-arch"></div><div class="door-grid"></div><span class="door-ornament">❧</span></div><div class="gate-door right-door"><div class="door-arch"></div><div class="door-grid"></div><span class="door-ornament">❧</span></div></div>
+      <div class="gate-ribbon">A celebration of love</div>
+      <button class="enter-button" id="enterButton"><span class="seal">✧</span><span>OPEN INVITATION</span><small>Tap to enter</small></button>
+    </div>
+  </section>
+
+  <main id="site" class="site hidden">
+    <button class="music-player" id="musicToggle" aria-label="Play background music"><span class="music-disc">♫</span><span class="music-label">PLAY MUSIC</span><span class="music-bars"><i></i><i></i><i></i></span></button>
+    <audio id="weddingAudio" loop preload="none" src="assets/music.mp3"></audio>
+
+    <section class="hero section-dark" id="home">
+      <div class="stars"></div><div class="hero-moon"></div><div class="hero-palace"></div>
+      <div class="hero-copy reveal"><p class="eyebrow">TOGETHER WITH OUR FAMILIES</p><p class="script-small">we joyfully invite you to celebrate</p><h1><span data-groom>Groom's Name</span><em>&</em><span data-bride>Bride's Name</span></h1><div class="hero-rule"><span>✦</span></div><p class="hero-date" data-date-label>THE WEDDING DATE</p><a class="scroll-cue" href="#invitation">SCROLL TO EXPLORE <span>↓</span></a></div>
+    </section>
+
+    <section class="section invitation-section" id="invitation"><div class="section-kicker">WITH THE BLESSINGS OF OUR FAMILIES</div><article class="invitation-card reveal"><div class="corner corner-tl">❧</div><div class="corner corner-tr">❧</div><div class="card-symbol">ॐ</div><p class="card-overline">REQUEST THE HONOUR OF YOUR PRESENCE</p><h2>At the wedding celebration of</h2><p class="script-name" data-groom>Groom's Name</p><span class="ampersand">and</span><p class="script-name" data-bride>Bride's Name</p><div class="thin-rule"></div><p class="invitation-copy" data-invite-message>Together with our families, we invite you to join us as we begin our forever. Your presence and blessings would mean the world to us.</p><p class="family-line" data-family-line>With love, our families</p><div class="corner corner-bl">❧</div><div class="corner corner-br">❧</div></article></section>
+
+    <section class="section scratch-section section-dark"><div class="section-kicker light">A LITTLE SURPRISE</div><h2 class="section-title light-title">The date is under wraps</h2><p class="section-sub light-sub">A little scratch, a lovely reveal.</p><div class="scratch-wrap reveal"><div class="scratch-date" id="scratchDate"><span class="scratch-heart">♡</span><span class="scratch-hidden-date" data-date-label>THE WEDDING DATE</span></div><canvas id="scratchCanvas" aria-label="Scratch to reveal the wedding date"></canvas></div><p class="scratch-hint">✧ SCRATCH THE GOLDEN HEART TO REVEAL ✧</p></section>
+
+    <section class="section story-section" id="story"><div class="section-kicker">A JOURNEY OF TWO HEARTS</div><h2 class="section-title">Our Story</h2><div class="story-layout reveal"><div class="story-art reveal"><img src="assets/couple-story.svg" alt="Decorative illustration of two wedding figures beneath a moonlit floral arch"><span class="photo-caption">Two families · One beautiful beginning</span></div><div class="story-copy"><span class="quote-mark">“</span><p data-story>Some stories are written in the stars. Ours began with a simple hello and grew into a thousand little reasons to choose each other, every day.</p><div class="signature" data-couple-signature>Bride & Groom</div></div></div></section>
+
+    <section class="section countdown-section section-dark"><div class="section-kicker light">THE MOMENT WE'VE BEEN WAITING FOR</div><h2 class="section-title light-title">The big day approaches</h2><div class="countdown reveal" id="countdown"><div><strong id="days">--</strong><span>DAYS</span></div><i>:</i><div><strong id="hours">--</strong><span>HOURS</span></div><i>:</i><div><strong id="minutes">--</strong><span>MINUTES</span></div><i>:</i><div><strong id="seconds">--</strong><span>SECONDS</span></div></div><p class="countdown-note" id="countdownNote">A new chapter, a beautiful beginning.</p></section>
+
+    <section class="section events-section" id="events"><div class="section-kicker">THE CELEBRATIONS</div><h2 class="section-title">Join us for the festivities</h2><p class="section-sub">Every ritual, every laugh, every memory — made sweeter with you.</p><div class="events-grid" id="eventsGrid"></div></section>
+
+    <section class="section venue-section section-dark" id="venue"><div class="section-kicker light">FIND YOUR WAY TO THE CELEBRATION</div><h2 class="section-title light-title">The Venues</h2><div class="venue-card reveal"><div class="venue-illustration">⌖</div><p class="venue-label">THE WEDDING VENUE</p><h3 data-venue-name>Venue Name</h3><p data-venue-address>Full venue address will appear here</p><a class="gold-button" id="mapLink" href="#" target="_blank" rel="noopener">VIEW ON GOOGLE MAPS ↗</a></div><p class="venue-footnote">We can't wait to celebrate with you.</p></section>
+
+    <section class="section closing-section"><div class="closing-ornament">✧ ❀ ✧</div><p class="section-kicker">UNTIL WE MEET</p><h2 class="closing-title">Your presence is our present.</h2><p class="closing-copy">Thank you for being a part of our story and for making our celebration even more special.</p><div class="closing-names"><span data-groom>Groom's Name</span><i>&</i><span data-bride>Bride's Name</span></div><p class="closing-date" data-date-label>THE WEDDING DATE</p><div class="closing-stamp">WITH LOVE<br>ALWAYS</div></section>
+    <footer>MADE WITH LOVE <span>✦</span> <span data-groom>Groom's Name</span> & <span data-bride>Bride's Name</span></footer>
+  </main>
+  <script src="content.js"></script><script src="script.js"></script>
+</body></html>
