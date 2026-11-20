@@ -16,8 +16,9 @@
 
   // Gate opening
   $('#enterButton').addEventListener('click', () => {
+    if ($('#gateScreen').classList.contains('opened')) return;
     $('#gateScreen').classList.add('opened');
-    setTimeout(() => { $('#gateScreen').remove(); $('#site').classList.remove('hidden'); document.body.classList.add('entered'); revealObserver.observeAll?.(); }, 1050);
+    setTimeout(() => { $('#gateScreen').remove(); $('#site').classList.remove('hidden'); document.body.classList.add('entered'); revealObserver.observeAll?.(); requestAnimationFrame(() => requestAnimationFrame(initScratch)); }, 1050);
   });
 
   // Event cards
@@ -38,16 +39,21 @@
 
   // Floating music player. Add your licensed audio file at assets/music.mp3.
   const audio = $('#weddingAudio'), musicButton = $('#musicToggle');
+  const musicLabel = musicButton.querySelector('.music-label');
   musicButton.addEventListener('click', async () => {
-    if (audio.paused) { try { await audio.play(); musicButton.classList.add('playing'); musicButton.querySelector('.music-label').textContent = 'PLAYING'; } catch { musicButton.querySelector('.music-label').textContent = 'ADD MUSIC FILE'; } }
-    else { audio.pause(); musicButton.classList.remove('playing'); musicButton.querySelector('.music-label').textContent = 'PLAY MUSIC'; }
+    if (audio.paused) {
+      musicLabel.textContent = 'LOADING…';
+      try { await audio.play(); musicButton.classList.add('playing'); musicLabel.textContent = 'PLAYING'; }
+      catch (err) { if (err && err.name === 'AbortError') return; musicLabel.textContent = 'TAP TO RETRY'; }
+    } else { audio.pause(); musicButton.classList.remove('playing'); musicLabel.textContent = 'PLAY MUSIC'; }
   });
-  audio.addEventListener('error', () => { if (!audio.paused) musicButton.querySelector('.music-label').textContent = 'ADD MUSIC FILE'; });
+  audio.addEventListener('error', () => { musicButton.classList.remove('playing'); musicLabel.textContent = 'MUSIC UNAVAILABLE'; });
 
   // Countdown
   const target = data.weddingDate ? new Date(data.weddingDate).getTime() : NaN;
   const countdownNote = $('#countdownNote');
   function tick() {
+    if (document.hidden) return;
     if (!Number.isFinite(target)) { countdownNote.textContent = 'Add the wedding date in content.js to activate the countdown.'; return; }
     let diff = Math.max(0, target - Date.now());
     const vals = [Math.floor(diff/86400000), Math.floor(diff/3600000)%24, Math.floor(diff/60000)%60, Math.floor(diff/1000)%60];
@@ -57,21 +63,93 @@
   tick(); setInterval(tick, 1000);
 
   // Scratch-to-reveal canvas
-  const canvas = $('#scratchCanvas'), ctx = canvas.getContext('2d'), scratchDate = $('#scratchDate');
-  function setupScratch() {
-    const rect = scratchDate.getBoundingClientRect(), dpr = Math.max(1, window.devicePixelRatio || 1);
-    canvas.width = rect.width*dpr; canvas.height = rect.height*dpr; canvas.style.width = rect.width+'px'; canvas.style.height = rect.height+'px';
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-    const grad = ctx.createLinearGradient(0,0,rect.width,rect.height); grad.addColorStop(0,'#9b7131'); grad.addColorStop(.45,'#f4dfa0'); grad.addColorStop(1,'#b58a43');
-    ctx.fillStyle = grad; ctx.fillRect(0,0,rect.width,rect.height);
-    ctx.fillStyle = 'rgba(255,255,255,.28)'; for(let i=0;i<90;i++){ const x=Math.random()*rect.width,y=Math.random()*rect.height; ctx.fillRect(x,y,1.2,1.2); }
-    ctx.globalCompositeOperation='destination-out';
+  // (fixed: it used to be sized while the page was still hidden => 0x0 canvas,
+  //  and it was sized to the inner text box instead of the whole card.)
+  const scratchWrap = $('.scratch-wrap'), canvas = $('#scratchCanvas');
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  const scratchHint = $('.scratch-hint');
+  const BRUSH = 26;                       // brush radius in CSS px
+  let cssW = 0, cssH = 0, revealed = false, drawing = false, last = null, lastCheck = 0;
+
+  function paintCover() {
+    const w = scratchWrap.clientWidth, h = scratchWrap.clientHeight;
+    if (!w || !h) return false;           // not visible yet
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);   // cap = lighter on phones
+    canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+    canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+    cssW = w; cssH = h;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.globalCompositeOperation = 'source-over';
+    const g = ctx.createLinearGradient(0, 0, w, h);
+    g.addColorStop(0, '#9b7131'); g.addColorStop(.45, '#f4dfa0'); g.addColorStop(1, '#b58a43');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = 'rgba(255,255,255,.28)';
+    for (let i = 0; i < 90; i++) ctx.fillRect(Math.random() * w, Math.random() * h, 1.2, 1.2);
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = 'rgba(120,84,32,.55)';
+    ctx.font = `${Math.round(h * .38)}px Georgia, serif`; ctx.fillText('♡', w / 2, h * .42);
+    ctx.font = '600 11px Montserrat, sans-serif'; ctx.fillText('SCRATCH HERE', w / 2, h * .74);
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.strokeStyle = '#000'; ctx.fillStyle = '#000';
+    ctx.lineWidth = BRUSH * 2; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    return true;
   }
-  let drawing = false;
-  function erase(e) { if(!drawing) return; const r=canvas.getBoundingClientRect(), p=e.touches?e.touches[0]:e; ctx.beginPath(); ctx.arc(p.clientX-r.left,p.clientY-r.top,22,0,Math.PI*2); ctx.fill(); }
-  canvas.addEventListener('pointerdown',e=>{drawing=true;canvas.setPointerCapture(e.pointerId);erase(e)});
-  canvas.addEventListener('pointermove',erase); ['pointerup','pointercancel','pointerleave'].forEach(ev=>canvas.addEventListener(ev,()=>drawing=false));
-  setupScratch(); window.addEventListener('resize',setupScratch);
+
+  function reveal() {
+    if (revealed) return;
+    revealed = true; drawing = false;
+    scratchWrap.classList.add('revealed');
+    if (scratchHint) scratchHint.textContent = '✧ SAVE THE DATE ✧';
+    setTimeout(() => { canvas.style.display = 'none'; }, 1000);
+  }
+
+  function checkProgress() {
+    if (revealed || !canvas.width) return;
+    const { width, height } = canvas, data = ctx.getImageData(0, 0, width, height).data;
+    const step = 6; let clear = 0, total = 0;
+    for (let y = 0; y < height; y += step) for (let x = 0; x < width; x += step) {
+      total++; if (data[(y * width + x) * 4 + 3] < 40) clear++;
+    }
+    if (total && clear / total > .45) reveal();
+  }
+
+  const point = e => {                    // robust even while the card is mid-animation (scaled)
+    const r = canvas.getBoundingClientRect();
+    return { x: (e.clientX - r.left) * (cssW / (r.width || 1)), y: (e.clientY - r.top) * (cssH / (r.height || 1)) };
+  };
+  const stroke = (a, b) => { ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); };
+
+  canvas.addEventListener('pointerdown', e => {
+    if (revealed) return;
+    drawing = true; last = point(e);
+    try { canvas.setPointerCapture(e.pointerId); } catch {}
+    ctx.beginPath(); ctx.arc(last.x, last.y, BRUSH, 0, Math.PI * 2); ctx.fill();
+    e.preventDefault();
+  });
+  canvas.addEventListener('pointermove', e => {
+    if (!drawing) return;
+    const p = point(e); stroke(last, p); last = p; e.preventDefault();
+    const now = performance.now(); if (now - lastCheck > 700) { lastCheck = now; checkProgress(); }
+  });
+  const endDraw = () => { if (!drawing) return; drawing = false; checkProgress(); };
+  ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev => canvas.addEventListener(ev, endDraw));
+  canvas.addEventListener('contextmenu', e => e.preventDefault());
+  canvas.tabIndex = 0;                    // keyboard users: Enter / Space reveals the date
+  canvas.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); reveal(); } });
+
+  // Paint once the section is really visible, and only repaint if the WIDTH changes
+  // (mobile address-bar show/hide fires 'resize' while scrolling and used to wipe the scratch).
+  let scratchWidth = 0;
+  function initScratch() {
+    if (revealed) return;
+    if (paintCover()) scratchWidth = scratchWrap.clientWidth;
+  }
+  if ('ResizeObserver' in window) {
+    new ResizeObserver(() => {
+      const w = scratchWrap.clientWidth;
+      if (w && w !== scratchWidth && !revealed && !drawing) initScratch();
+    }).observe(scratchWrap);
+  }
 
   // Scroll reveals with staggered section choreography
   const revealObserver = { observeAll() {
@@ -96,7 +174,8 @@
   // Subtle falling petals: decorative only, automatically reduced for reduced-motion users.
   if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
     const layer = document.createElement('div'); layer.className = 'petal-layer'; layer.setAttribute('aria-hidden','true');
-    for(let i=0;i<13;i++){
+    const petalCount = window.matchMedia('(max-width:650px)').matches ? 6 : 10;
+    for(let i=0;i<petalCount;i++){
       const petal = document.createElement('span'); petal.className = 'petal';
       petal.style.left = `${(i * 37 + 9) % 100}%`;
       petal.style.setProperty('--duration', `${12 + (i % 5) * 2.2}s`);

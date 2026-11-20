@@ -10,11 +10,11 @@ body{overflow-x:hidden;-webkit-font-smoothing:antialiased}
 .gate-screen{background:radial-gradient(ellipse at 50% 38%,#3c3040 0%,#171522 58%,#0d1018 100%)}
 .gate-scene:before,.hero:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 15% 25%,#fff8d91a 0 1px,transparent 2px),radial-gradient(circle at 76% 18%,#fff8d91a 0 1px,transparent 2px),radial-gradient(circle at 82% 61%,#fff8d91a 0 1px,transparent 2px),radial-gradient(circle at 28% 70%,#fff8d91a 0 1px,transparent 2px);background-size:180px 170px;animation:starDrift 22s linear infinite}
 .gate-scene:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 25%,#f6d99b12 48%,transparent 68%);transform:translateX(-120%);animation:gateGlimmer 7s ease-in-out infinite 1s}
-.moon,.hero-moon{animation:moonFloat 7s ease-in-out infinite,moonGlow 4s ease-in-out infinite alternate}
-.palace{filter:drop-shadow(0 0 18px #d8ae6b28)}
+.moon,.hero-moon{animation:moonFloat 7s ease-in-out infinite;will-change:transform}
+
 .gate-doors{transform:translateZ(0)}
 .gate-door{transition:filter .4s}
-.enter-button{animation:sealPulse 2.8s ease-in-out infinite;touch-action:manipulation;min-width:118px;min-height:118px}
+.enter-button .seal{display:inline-block;animation:heartBeat 2.4s ease-in-out infinite}.enter-button{touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-width:118px;min-height:118px}
 .enter-button:hover{filter:brightness(1.08);box-shadow:0 0 0 10px #e8d2a533,0 0 38px #e9cf8c66,0 8px 25px #0008}
 .gate-screen.opened{animation:gateFade .8s ease 0s forwards;animation-delay:.82s}
 .hero{isolation:isolate;min-height:min(850px,100svh);display:grid;place-items:center;padding-top:100px;padding-bottom:70px}
@@ -29,7 +29,7 @@ body{overflow-x:hidden;-webkit-font-smoothing:antialiased}
 .hero-palace:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,#d4b27333,transparent);transform:translateX(-100%);animation:palaceLight 8s ease-in-out infinite 2s}
 .section-title,.section-kicker{position:relative}
 .section-title:after{content:"✧";display:block;font:15px var(--serif);color:var(--gold);margin:12px auto 0;opacity:.75}
-.invitation-card{transition:transform .7s cubic-bezier(.2,.7,.2,1),box-shadow .7s;transform-style:preserve-3d}
+.invitation-card{transition:transform .7s cubic-bezier(.2,.7,.2,1),box-shadow .7s}
 .invitation-card.visible{animation:cardFloatIn 1s cubic-bezier(.2,.7,.2,1) both}
 .invitation-card:hover{transform:translateY(-5px);box-shadow:0 28px 65px #6b4c2824}
 .scratch-wrap{box-shadow:0 18px 55px #08061066;transition:transform .5s,box-shadow .5s}
@@ -40,7 +40,7 @@ body{overflow-x:hidden;-webkit-font-smoothing:antialiased}
 .story-art img{transition:transform 1.1s cubic-bezier(.2,.7,.2,1)}
 .story-art:hover img{transform:scale(1.035)}
 .story-copy.visible{animation:storyTextIn 1s cubic-bezier(.2,.7,.2,1) both}
-.countdown div strong{display:block;text-shadow:0 0 22px #d6b56d44;animation:numberGlow 3s ease-in-out infinite alternate}
+.countdown div strong{display:block;text-shadow:0 0 22px #d6b56d44}
 .countdown div:nth-of-type(2) strong{animation-delay:.3s}.countdown div:nth-of-type(3) strong{animation-delay:.6s}.countdown div:nth-of-type(4) strong{animation-delay:.9s}
 .event-card{transition:transform .55s cubic-bezier(.2,.7,.2,1),box-shadow .55s,border-color .55s}
 .event-card.visible{animation:eventRise .8s cubic-bezier(.2,.7,.2,1) both}
@@ -53,13 +53,13 @@ body{overflow-x:hidden;-webkit-font-smoothing:antialiased}
 .gold-button:hover{transform:translateY(-3px);background:#a27b4c;box-shadow:0 8px 24px #0003}
 .closing-ornament{animation:ornamentTurn 16s linear infinite}
 .closing-stamp{animation:stampIn 1.2s cubic-bezier(.2,.7,.2,1) both;animation-timeline:view();animation-range:entry 10% cover 35%}
-.music-player{min-height:48px;min-width:48px;padding:8px 14px 8px 8px;backdrop-filter:blur(12px);transition:transform .25s,box-shadow .25s;bottom:max(18px,env(safe-area-inset-bottom));right:max(16px,env(safe-area-inset-right))}
+.music-player{min-height:48px;min-width:48px;padding:8px 14px 8px 8px;transition:transform .25s,box-shadow .25s;bottom:max(18px,env(safe-area-inset-bottom));right:max(16px,env(safe-area-inset-right))}
 .music-player:hover{transform:translateY(-3px);box-shadow:0 10px 30px #0006}
 .music-disc{flex:0 0 30px}
 .music-player.playing{box-shadow:0 0 0 4px #c6a96d24,0 8px 30px #0005}
 /* floating petals are decorative and never intercept taps */
 .petal-layer{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:8}
-.petal{position:absolute;top:-8vh;width:9px;height:13px;border-radius:90% 0 90% 0;background:linear-gradient(135deg,#f6dfb7,#b77b82);opacity:0;filter:drop-shadow(0 2px 3px #0002);animation:petalFall var(--duration,13s) linear var(--delay,0s) infinite}
+.petal{position:absolute;top:-8vh;width:9px;height:13px;border-radius:90% 0 90% 0;background:linear-gradient(135deg,#f6dfb7,#b77b82);opacity:0;will-change:transform,opacity;animation:petalFall var(--duration,13s) linear var(--delay,0s) infinite}
 .petal:nth-child(3n){width:6px;height:9px;background:linear-gradient(135deg,#f7e9cb,#d2ad67)}
 .petal:nth-child(4n){border-radius:50% 0 50% 0;opacity:.6}
 .scroll-progress{position:fixed;z-index:45;top:0;left:0;width:100%;height:2px;pointer-events:none;background:#ffffff18}
@@ -71,7 +71,7 @@ body{overflow-x:hidden;-webkit-font-smoothing:antialiased}
 @keyframes sealPulse{0%,100%{box-shadow:0 0 0 7px #e8d2a522,0 8px 25px #0008}50%{box-shadow:0 0 0 13px #e8d2a522,0 0 36px #e8d2a555,0 8px 25px #0008}}
 @keyframes gateFade{to{opacity:0;visibility:hidden}}
 @keyframes heroRise{from{opacity:0;transform:translateY(38px)}to{opacity:1;transform:translateY(0)}}
-@keyframes nameReveal{from{opacity:0;transform:translateY(25px);filter:blur(8px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes nameReveal{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:none}}
 @keyframes softFade{from{opacity:0}to{opacity:1}}
 @keyframes ruleGrow{from{transform:scaleX(0);opacity:0}to{transform:scaleX(1);opacity:1}}
 @keyframes scrollNudge{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
@@ -161,3 +161,13 @@ body{overflow-x:hidden;-webkit-font-smoothing:antialiased}
 .scroll-reveal{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
 .scroll-reveal.visible{opacity:1;transform:none}
 .reveal.visible{transition-delay:var(--reveal-delay,0ms)}
+
+/* ===== Fixes: scratch card + mobile performance ===== */
+.scratch-wrap canvas{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;transition:opacity .9s ease}
+.scratch-wrap.revealed canvas{opacity:0;pointer-events:none}
+.scratch-wrap canvas:focus-visible{outline:2px solid #e9cd8e;outline-offset:-4px}
+@media(max-width:650px),(hover:none){
+  .grain{display:none}                         /* full-screen noise layer is costly on phones */
+  .gate-scene:after,.hero-palace:after{display:none;animation:none}  /* full-screen shimmer sweeps */
+  .moon,.hero-moon{box-shadow:0 0 45px #e9d7a577}
+}
